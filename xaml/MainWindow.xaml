@@ -1,0 +1,464 @@
+<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="WinTweak Utility v3.0"
+    Width="1100" Height="750"
+    MinWidth="900" MinHeight="600"
+    WindowStartupLocation="CenterScreen"
+    Background="#0D0D12"
+    Foreground="#E8E8F0"
+    FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="BgPrimary"    Color="#0D0D12"/>
+        <SolidColorBrush x:Key="BgSecondary"  Color="#13131A"/>
+        <SolidColorBrush x:Key="BgCard"       Color="#1A1A24"/>
+        <SolidColorBrush x:Key="BgHover"      Color="#22223A"/>
+        <SolidColorBrush x:Key="AccentBlue"   Color="#4FC3F7"/>
+        <SolidColorBrush x:Key="AccentGreen"  Color="#69F0AE"/>
+        <SolidColorBrush x:Key="AccentOrange" Color="#FFB74D"/>
+        <SolidColorBrush x:Key="AccentRed"    Color="#EF5350"/>
+        <SolidColorBrush x:Key="TextPrimary"  Color="#E8E8F0"/>
+        <SolidColorBrush x:Key="TextMuted"    Color="#888899"/>
+        <SolidColorBrush x:Key="Border"       Color="#2A2A3E"/>
+
+        <Style x:Key="WTUTabItem" TargetType="TabItem">
+            <Setter Property="Background"      Value="Transparent"/>
+            <Setter Property="Foreground"      Value="#888899"/>
+            <Setter Property="FontSize"        Value="13"/>
+            <Setter Property="FontWeight"      Value="SemiBold"/>
+            <Setter Property="Padding"         Value="18,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="TabBorder" Background="Transparent"
+                                BorderThickness="0,0,0,2" BorderBrush="Transparent"
+                                Padding="18,10">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#4FC3F7"/>
+                                <Setter TargetName="TabBorder" Property="Background"  Value="#1A1A24"/>
+                                <Setter Property="Foreground" Value="#4FC3F7"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="#22223A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="WTUButton" TargetType="Button">
+            <Setter Property="Background"      Value="#1E2A3A"/>
+            <Setter Property="Foreground"      Value="#4FC3F7"/>
+            <Setter Property="BorderBrush"     Value="#2A3F55"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding"         Value="14,7"/>
+            <Setter Property="FontSize"        Value="12"/>
+            <Setter Property="FontWeight"      Value="SemiBold"/>
+            <Setter Property="Cursor"          Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background"  Value="#26394D"/>
+                                <Setter Property="BorderBrush" Value="#4FC3F7"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#0E1F2E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="WTUButtonGreen" TargetType="Button" BasedOn="{StaticResource WTUButton}">
+            <Setter Property="Background"  Value="#1A2E22"/>
+            <Setter Property="Foreground"  Value="#69F0AE"/>
+            <Setter Property="BorderBrush" Value="#2A4E35"/>
+        </Style>
+
+        <Style x:Key="WTUButtonRed" TargetType="Button" BasedOn="{StaticResource WTUButton}">
+            <Setter Property="Background"  Value="#2E1A1A"/>
+            <Setter Property="Foreground"  Value="#EF5350"/>
+            <Setter Property="BorderBrush" Value="#4E2A2A"/>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground"              Value="#C8C8D8"/>
+            <Setter Property="FontSize"                Value="12"/>
+            <Setter Property="Margin"                  Value="0,3"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="Foreground"      Value="#4FC3F7"/>
+            <Setter Property="FontSize"        Value="12"/>
+            <Setter Property="FontWeight"      Value="Bold"/>
+            <Setter Property="BorderBrush"     Value="#2A2A3E"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin"          Value="0,6,0,0"/>
+            <Setter Property="Padding"         Value="8"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- TITLE BAR -->
+        <Border Grid.Row="0" Background="#0A0A10" BorderBrush="#2A2A3E"
+                BorderThickness="0,0,0,1" Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="[WTU]" FontSize="16" FontWeight="Bold"
+                               Foreground="#4FC3F7" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                    <StackPanel>
+                        <TextBlock Text="WinTweak Utility" FontSize="18" FontWeight="Bold" Foreground="#E8E8F0"/>
+                        <TextBlock Text="v3.0 - Modular Windows System Optimizer"
+                                   FontSize="11" Foreground="#4FC3F7" Margin="0,1,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="#1A2E22" CornerRadius="4" Padding="8,4" Margin="0,0,8,0">
+                        <TextBlock x:Name="AdminStatusText" Text="* Admin"
+                                   FontSize="11" FontWeight="Bold" Foreground="#69F0AE"/>
+                    </Border>
+                    <Border Background="#1E1E2E" CornerRadius="4" Padding="8,4">
+                        <TextBlock x:Name="CheckpointCountText" Text="0 Checkpoints"
+                                   FontSize="11" Foreground="#888899"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- MAIN TAB CONTROL -->
+        <TabControl Grid.Row="1" x:Name="MainTabControl"
+                    Background="#0D0D12" BorderThickness="0" Padding="0">
+            <TabControl.Resources>
+                <Style TargetType="TabPanel">
+                    <Setter Property="Background" Value="#0A0A10"/>
+                </Style>
+            </TabControl.Resources>
+
+            <!-- INSTALL TAB -->
+            <TabItem Header="[+] Install" Style="{StaticResource WTUTabItem}">
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="280"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="0,0,12,0">
+                        <StackPanel x:Name="InstallPanel"/>
+                    </ScrollViewer>
+                    <Border Grid.Column="1" Background="#13131A" CornerRadius="8" Padding="14">
+                        <StackPanel>
+                            <TextBlock Text="App Actions" FontWeight="Bold"
+                                       Foreground="#4FC3F7" FontSize="13" Margin="0,0,0,12"/>
+                            <Button x:Name="InstallSelectedBtn"   Content="Install Selected"
+                                    Style="{StaticResource WTUButtonGreen}" Margin="0,0,0,8"
+                                    HorizontalAlignment="Stretch"/>
+                            <Button x:Name="UninstallSelectedBtn" Content="Uninstall Selected"
+                                    Style="{StaticResource WTUButtonRed}"   Margin="0,0,0,8"
+                                    HorizontalAlignment="Stretch"/>
+                            <Separator Background="#2A2A3E" Margin="0,8"/>
+                            <TextBlock Text="Selected Apps:" Foreground="#888899"
+                                       FontSize="11" Margin="0,0,0,6"/>
+                            <ListBox x:Name="SelectedAppsList" Background="#0D0D12"
+                                     BorderBrush="#2A2A3E" Foreground="#C8C8D8"
+                                     FontSize="11" Height="200" Margin="0,0,0,8"/>
+                            <TextBlock Text="Progress:" Foreground="#888899"
+                                       FontSize="11" Margin="0,6,0,4"/>
+                            <ProgressBar x:Name="InstallProgress" Height="6"
+                                         Background="#22223A" Foreground="#4FC3F7"
+                                         BorderThickness="0" Minimum="0" Maximum="100"/>
+                            <TextBlock x:Name="InstallStatus" Text="Ready"
+                                       FontSize="11" Foreground="#888899"
+                                       Margin="0,6,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- TWEAKS TAB -->
+            <TabItem Header="[~] Tweaks" Style="{StaticResource WTUTabItem}">
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="280"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="0,0,12,0">
+                        <StackPanel x:Name="TweaksPanel"/>
+                    </ScrollViewer>
+                    <Border Grid.Column="1" Background="#13131A" CornerRadius="8" Padding="14">
+                        <StackPanel>
+                            <TextBlock Text="Tweak Actions" FontWeight="Bold"
+                                       Foreground="#4FC3F7" FontSize="13" Margin="0,0,0,12"/>
+                            <Button x:Name="ApplyTweaksBtn" Content="Apply Selected"
+                                    Style="{StaticResource WTUButtonGreen}"
+                                    HorizontalAlignment="Stretch" Margin="0,0,0,8"/>
+                            <Button x:Name="UndoTweaksBtn"  Content="Undo Selected"
+                                    Style="{StaticResource WTUButton}"
+                                    HorizontalAlignment="Stretch" Margin="0,0,0,8"/>
+                            <Separator Background="#2A2A3E" Margin="0,8"/>
+                            <TextBlock Text="Tweak Info:" Foreground="#888899"
+                                       FontSize="11" Margin="0,0,0,6"/>
+                            <TextBlock x:Name="TweakDescription"
+                                       Text="Select a tweak to see details."
+                                       Foreground="#C8C8D8" FontSize="11"
+                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+                            <Border x:Name="TweakWarningBox" Background="#2E1A1A"
+                                    CornerRadius="4" Padding="8,6" Visibility="Collapsed">
+                                <TextBlock x:Name="TweakWarningText"
+                                           Foreground="#EF5350" FontSize="11" TextWrapping="Wrap"/>
+                            </Border>
+                            <Border x:Name="RestartBadge" Background="#2E2200" CornerRadius="4"
+                                    Padding="8,6" Margin="0,6,0,0" Visibility="Collapsed">
+                                <TextBlock Text="Restart Required"
+                                           Foreground="#FFB74D" FontSize="11" FontWeight="Bold"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- GAMING TAB -->
+            <TabItem Header="[G] Gaming" Style="{StaticResource WTUTabItem}">
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MinWidth="400"/>
+                        <ColumnDefinition Width="340"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                        <GroupBox Header="Performance Modes">
+                            <StackPanel x:Name="GamingModesPanel" Margin="0,4"/>
+                        </GroupBox>
+                        <GroupBox Header="Safety" Margin="0,12,0,0">
+                            <WrapPanel Margin="0,4">
+                                <Button x:Name="CreateCheckpointBtn"  Content="Create Checkpoint"
+                                        Style="{StaticResource WTUButtonGreen}" Margin="0,0,8,8"/>
+                                <Button x:Name="RestoreCheckpointBtn" Content="Restore Checkpoint"
+                                        Style="{StaticResource WTUButton}"      Margin="0,0,8,8"/>
+                                <Button x:Name="ListCheckpointsBtn"   Content="List Checkpoints"
+                                        Style="{StaticResource WTUButton}"      Margin="0,0,8,8"/>
+                                <Button x:Name="DeleteCheckpointBtn"  Content="Delete Checkpoint"
+                                        Style="{StaticResource WTUButtonRed}"   Margin="0,0,8,8"/>
+                            </WrapPanel>
+                        </GroupBox>
+                        <GroupBox Header="Status" Margin="0,12,0,0">
+                            <StackPanel Margin="0,4">
+                                <TextBlock x:Name="GamingStatusText" Text="Ready - No mode applied"
+                                           Foreground="#69F0AE" FontSize="12" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="GamingEstimatedImpact" Text=""
+                                           FontSize="11" Foreground="#888899"
+                                           Margin="0,4,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+
+                    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <GroupBox Header="Individual Tweaks">
+                                <StackPanel x:Name="GamingTweaksPanel" Margin="0,4"/>
+                            </GroupBox>
+                            <GroupBox Header="GPU Control" Margin="0,12,0,0">
+                                <StackPanel Margin="0,4">
+                                    <Grid Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Vendor:" Foreground="#888899"
+                                                   FontSize="11" VerticalAlignment="Center"/>
+                                        <ComboBox x:Name="GPUVendorCombo" Grid.Column="1"
+                                                  Background="#1A1A24" Foreground="#C8C8D8"
+                                                  BorderBrush="#2A2A3E" FontSize="11">
+                                            <ComboBoxItem Content="NVIDIA" IsSelected="True"/>
+                                            <ComboBoxItem Content="AMD"/>
+                                            <ComboBoxItem Content="Intel"/>
+                                        </ComboBox>
+                                    </Grid>
+                                    <Grid Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Lock MHz:" Foreground="#888899"
+                                                   FontSize="11" VerticalAlignment="Center"/>
+                                        <Slider x:Name="GPUClockSlider" Grid.Column="1"
+                                                Minimum="500" Maximum="3000" Value="1800"
+                                                TickFrequency="100" IsSnapToTickEnabled="True"
+                                                Foreground="#4FC3F7"/>
+                                        <TextBlock x:Name="GPUClockValue" Grid.Column="2" Text="1800"
+                                                   Foreground="#C8C8D8" FontSize="11"
+                                                   VerticalAlignment="Center" TextAlignment="Right"/>
+                                    </Grid>
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Power %:" Foreground="#888899"
+                                                   FontSize="11" VerticalAlignment="Center"/>
+                                        <Slider x:Name="GPUPowerSlider" Grid.Column="1"
+                                                Minimum="30" Maximum="120" Value="80"
+                                                TickFrequency="5" IsSnapToTickEnabled="True"
+                                                Foreground="#4FC3F7"/>
+                                        <TextBlock x:Name="GPUPowerValue" Grid.Column="2" Text="80%"
+                                                   Foreground="#C8C8D8" FontSize="11"
+                                                   VerticalAlignment="Center" TextAlignment="Right"/>
+                                    </Grid>
+                                    <Button x:Name="ApplyGPUBtn" Content="Apply GPU Settings"
+                                            Style="{StaticResource WTUButtonGreen}"
+                                            HorizontalAlignment="Stretch"/>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Tools" Margin="0,12,0,0">
+                                <WrapPanel Margin="0,4">
+                                    <Button x:Name="LaunchMonitorBtn" Content="Monitor"
+                                            Style="{StaticResource WTUButton}" Margin="0,0,8,0"/>
+                                    <Button x:Name="RunBenchmarkBtn"  Content="Benchmark"
+                                            Style="{StaticResource WTUButton}"/>
+                                </WrapPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <!-- FEATURES TAB -->
+            <TabItem Header="[F] Features" Style="{StaticResource WTUTabItem}">
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="280"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="0,0,12,0">
+                        <StackPanel x:Name="FeaturesPanel"/>
+                    </ScrollViewer>
+                    <Border Grid.Column="1" Background="#13131A" CornerRadius="8" Padding="14">
+                        <StackPanel>
+                            <TextBlock Text="Feature Actions" FontWeight="Bold"
+                                       Foreground="#4FC3F7" FontSize="13" Margin="0,0,0,12"/>
+                            <Button x:Name="EnableFeaturesBtn"  Content="Enable Selected"
+                                    Style="{StaticResource WTUButtonGreen}"
+                                    HorizontalAlignment="Stretch" Margin="0,0,0,8"/>
+                            <Button x:Name="DisableFeaturesBtn" Content="Disable Selected"
+                                    Style="{StaticResource WTUButtonRed}"
+                                    HorizontalAlignment="Stretch"/>
+                            <Separator Background="#2A2A3E" Margin="0,12"/>
+                            <TextBlock x:Name="FeatureDescription"
+                                       Text="Select a feature to see details."
+                                       Foreground="#C8C8D8" FontSize="11" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- REPAIR TAB -->
+            <TabItem Header="[R] Repair" Style="{StaticResource WTUTabItem}">
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="280"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="0,0,12,0">
+                        <StackPanel x:Name="RepairPanel"/>
+                    </ScrollViewer>
+                    <Border Grid.Column="1" Background="#13131A" CornerRadius="8" Padding="14">
+                        <StackPanel>
+                            <TextBlock Text="Repair Info" FontWeight="Bold"
+                                       Foreground="#4FC3F7" FontSize="13" Margin="0,0,0,12"/>
+                            <TextBlock x:Name="RepairDescription"
+                                       Text="Select a repair action to see details."
+                                       Foreground="#C8C8D8" FontSize="11" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- CONFIG TAB -->
+            <TabItem Header="[C] Config" Style="{StaticResource WTUTabItem}">
+                <ScrollViewer Margin="16" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <GroupBox Header="DNS Configuration">
+                            <StackPanel Margin="0,8">
+                                <TextBlock Text="Select a provider to apply to all active adapters (IPv4 + IPv6):"
+                                           Foreground="#888899" FontSize="11" Margin="0,0,0,10"/>
+                                <WrapPanel x:Name="DNSPanel" Margin="0,0,0,10"/>
+                                <TextBlock x:Name="DNSCurrentText" Text="Current: Loading..."
+                                           FontSize="11" Foreground="#4FC3F7"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="One-Click Presets" Margin="0,12,0,0">
+                            <StackPanel Margin="0,8">
+                                <TextBlock Text="Apply a curated combination of tweaks, mode, apps, and DNS in one click:"
+                                           Foreground="#888899" FontSize="11" Margin="0,0,0,10"/>
+                                <ItemsControl x:Name="PresetsPanel"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Rollback and Checkpoints" Margin="0,12,0,0">
+                            <StackPanel Margin="0,8">
+                                <ListBox x:Name="CheckpointsList" Background="#0D0D12"
+                                         BorderBrush="#2A2A3E" Foreground="#C8C8D8"
+                                         FontSize="11" Height="140"/>
+                                <WrapPanel Margin="0,8">
+                                    <Button x:Name="RestoreFromListBtn" Content="Restore Selected"
+                                            Style="{StaticResource WTUButton}"    Margin="0,0,8,0"/>
+                                    <Button x:Name="DeleteFromListBtn"  Content="Delete Selected"
+                                            Style="{StaticResource WTUButtonRed}" Margin="0,0,8,0"/>
+                                    <Button x:Name="CompareChkBtn"      Content="Compare Two"
+                                            Style="{StaticResource WTUButton}"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <!-- STATUS BAR -->
+        <Border Grid.Row="2" Background="#0A0A10" BorderBrush="#2A2A3E"
+                BorderThickness="0,1,0,0" Padding="16,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="StatusText" Text="Ready"
+                               Foreground="#69F0AE" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="StatusDetail" Text=""
+                               Foreground="#888899" FontSize="11"
+                               Margin="12,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+                <ProgressBar Grid.Column="1" x:Name="GlobalProgress" Height="4"
+                             Background="#22223A" Foreground="#4FC3F7"
+                             BorderThickness="0" Minimum="0" Maximum="100" Value="0"
+                             VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
